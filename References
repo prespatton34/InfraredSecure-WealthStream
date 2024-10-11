@@ -1,0 +1,72 @@
+import torch
+import torch.nn as nn
+import numpy as np
+import matplotlib.pyplot as plt
+
+num_nodes = 10000
+hours = 24
+samples_per_hour = 60
+time_steps = hours * samples_per_hour
+wave_frequency = 1 / 24
+wave_amplitude = 1.0
+infrared_amplitude = 0.5
+brainwave_amplitude = 0.3
+random_opportunity_scale = 0.8
+encryption_key = 0.5
+
+class WealthSignalVPNModel(nn.Module):
+    def __init__(self):
+      super(WealthSignalVPNModel, self).__init__()
+      self.num_nodes = num_nodes
+      self.time_steps = time_steps
+      self.encryption_key = encryption_key
+
+  def forward(self, time_tensor):
+      combined_signals = torch.zeros((self.num_nodes, self.time_steps), dtype=torch.float32)
+
+      for i in range(self.num_nodes):
+          wealth_signal = wave_amplitude * torch.sin(2 * np.pi * wave_frequency * time_tensor + 1 * (2 * np.pi / self.num_nodes))
+
+          random_wealth_opportunities = random_opportunitu_scale * torch.randn(self.time_steps)
+          infrared_signal = infrared_amplitide * torch.ones(self.time_steps)
+
+          brainwave_signal = brainwave_amplitude * torch.sin(2 * np.pi * brainwave_frequency * time_tensor)
+          combined_signals[i] = wealth_signal + random_wealth_opportunities + infrared_signal + brainwave_signal
+
+          overall_signal = torch.mean(combined_signals,dim=0)
+
+          encrypted_signal = torch.sin(overall_signal * self.encryption_key)
+
+          return encrypted_signal, overall_signal
+
+time_tensor = torch.linspace(0, hours, time_steps)
+
+vpn_model = WealthSignalVPNModel()
+encrypted_signal, original_signal = vpn_model(time_tensor)
+
+encrypted_signal_np = encrypted_signal.detach().numpy()
+original_signal_np = original_signal.detach().numpy()
+
+encrypted_signal_reshaped = encrypted_signal_np.reshape(samples_per_hour, hours))
+original_signal_reshaped = original_signal_np.reshape((samples_per_hour, hours))
+
+fig, axs = plt.subplots(2, 1, figsize=(15, 12))
+
+cax1 = axs[0].imshow(original_signal_reshaped, aspect='auto', cmap='viridis', interpolation='none)
+axs[0].set_title('Original Signal Visualization')
+axs[0].set_xlabel('Time (Hours)')
+axs[0].set_ylabel('Sample Points Per Hour')
+fig.colorbar(cax1, ax=axs[0], orientation='vertical', label='Amplitude')
+
+cax2 = axs[1].imshow(encrypted_signal_reshaped, aspect='auto', cmap='viridis', interpolation='none')
+axs[1].set_title('Encrypted Signal Visualization')
+axs[1].set_xlabel('Time(Hours)')
+axs[1].set_ylabel('Sample Points Per Hour')
+fig.colorbar(cax2, ax=axs[1], orientation='vertical', label='Amplitude')
+
+plt.tight_layout()
+plt.show()
+
+
+
+  
